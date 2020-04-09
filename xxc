@@ -7,7 +7,7 @@ import time
 res = requests.get('https://www.wtfskins.com/crash')
 res.raise_for_status()
 soup = bs4.BeautifulSoup(res.text, 'html.parser')
-x = soup.findAll(name='div', attr = {'white bonus-pot-value'})
+x = soup.findAll('body > app-root > div > app-nav-bar > div > div > div > div.nav-bar-topper > div > div:nth-child(11)')
 print(x)
 
 
