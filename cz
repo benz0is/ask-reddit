@@ -1,0 +1,25 @@
+crash_list1=[]
+crash_list2=[]
+
+for x in range(100000000):
+    time.sleep(5)
+    pot = driver.find_element_by_css_selector('body > app-root > div > app-nav-bar > div > div > div > div.nav-bar-topper > div > div:nth-child(11)')
+    print('Balance:' + pot.text)
+    crash = driver.find_element_by_css_selector('body > app-root > div > div.main-content > div > div > app-crash-game > div.left-section > div.crash-history > div')
+    time.sleep(1)
+    print('Last crash:'+ crash.text[:4])
+    if crash.text[:4] not in crash_list1[:4]:
+        crash_list1.insert(0, crash.text[:4])
+        print(crash_list1)
+    else:
+        continue
+    if len(crash_list1)>2:
+        crash_list1.pop()
+    else:
+        continue
+    pimpe = list(set(int(crash_list1)) - set(int(crash_list2)))
+    if int(pimpe) < 2:
+        print('it works')
+    else:
+        print('it doesnt')
+    crash_list1 = crash_list2
