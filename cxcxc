@@ -1,0 +1,64 @@
+from tkinter import *
+import sqlite3
+import tkinter
+import time
+from tkinter import messagebox
+
+root = Tk()
+root.geometry('500x400')
+root.resizable(0,0)
+root.title('Music player')
+
+
+def login():
+    return
+
+
+
+
+def register():
+    global screen1, username, password, usr , pw
+    usr = StringVar()
+    pw = StringVar()
+    screen1 = Toplevel(root)
+    screen1.geometry('400x300')
+    screen1.title('Please Register')
+    Label(screen1, text='Please Create A New User Below', font = ('Arial', 15)).pack()
+    Label(screen1, text='').pack()
+    Label(screen1 , text = 'Username:').pack()
+    username= Entry(screen1 , textvariable = usr)
+    username.pack()
+    Label(screen1, text = 'Password:').pack()
+    password = Entry(screen1, textvariable = pw)
+    password.pack()
+    Button(screen1, text='Register', command = registerDone).pack()
+    exit = Button(screen1 , text= 'Exit', command = exitas)
+    exit.pack()
+
+def exitas():
+    screen1.destroy()
+
+def registerDone():
+    username.delete(0,END)
+    password.delete(0, END)
+    x = pw.get()
+    y = usr.get()
+    if x == '' or y == '':
+        messagebox.showerror('Error','All fields are required')
+    else:
+        messagebox.showinfo('Info','Login is successfull')
+
+
+
+def mainscreen():
+    loginButton = Button(root, text='Login', padx= 46 , pady = 20 , command = login).pack()
+    registerButton = Button(root, text='Register', padx= 40 , pady = 20 , command = register).pack()
+
+mainscreen()
+
+
+
+
+
+
+root.mainloop()
