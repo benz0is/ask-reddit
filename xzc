@@ -17,57 +17,72 @@ answer_choice = [
           ['we4r','wer','qq'],
           ]
 
-
+answers = [1,1,1,1,1,1]
 user_answer = []
 indexes = []
 
 
-
 def randind():
     global indexes
-    x = random.randint(0,5)
     while len(indexes) < 3:
+        x = random.randint(0, 5)
         if x not in indexes :
             indexes.append(x)
         else:
             continue
 
+
 ques = 1
 def selected():
-    global question , res, r1,r2,r3 ,ques
+    global question , res, r1,r2,r3 ,ques, user_answer
+    res = IntVar()
     x = res.get()
+    user_answer.append(x)
     res.set(-1)
-    if ques <5:
+    if ques <3:
+        res.set(-1)
         question.config(text=questions[indexes[ques]])
         r1['text'] = answer_choice[indexes[ques]][0]
         r2['text'] = answer_choice[indexes[ques]][1]
         r3['text'] = answer_choice[indexes[ques]][2]
+        r1.deselect()
+        r2.deselect()
+        r3.deselect()
         ques += 1
+    else:
+        calc()
+
+def calc():
+    global indexes , user_answer, answers
+    x = 0
+    score = 0
+    for i in indexes:
+        if user_answer[x]== answers[i]:
+            score += 1
+        else:
+            continue
+            final_res = Label(root, text= str(score))
+            final_res.pack()
 
 
 def startquiz():
     global question ,r1,r2,r3, res
     res = IntVar()
     res.set(-1)
-    question = Label(root, text = questions[indexes[0]])
+    question = Label(root, text = questions[indexes[0]] , bg = "#ffffff")
     question.pack()
-    r1 = Radiobutton(root, text = answer_choice[indexes[0]], variable = res , command = selected)
+    r1 = Radiobutton(root, text = answer_choice[indexes[0]][0], variable = res , command = selected, bg = "#ffffff")
     r1.pack()
-    r2 = Radiobutton(root, text = answer_choice[indexes[0]], variable = res , command = selected)
+    r2 = Radiobutton(root, text = answer_choice[indexes[0]][1], variable = res , command = selected, bg = "#ffffff")
     r2.pack()
-    r3 = Radiobutton(root, text = answer_choice[indexes[0]], variable = res , command = selected)
+    r3 = Radiobutton(root, text = answer_choice[indexes[0]][2], variable = res , command = selected, bg = "#ffffff")
     r3.pack()
-
-
-
-
-
 
 def startIsPressed():
     bt1.destroy()
     intro.destroy()
+    randind()
     startquiz()
-
 
 
 root = Tk()
@@ -77,7 +92,7 @@ root.title('Quizstar')
 root.config(background="#ffffff")
 
 
-intro = Label(root, text='This is a simple quiz, good luck!', font = ('Times', 25))
+intro = Label(root, text='This is a simple quiz, good luck!', font = ('Times', 25), bg = '#ffffff')
 intro.pack()
 img1 = ImageTk.PhotoImage(Image.open(r'C:\Users\user\Desktop\quizstar\Frame.png'))
 bt1 = Button(root, image=img1 , relief= FLAT , command = startIsPressed)
