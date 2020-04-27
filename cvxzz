@@ -1,0 +1,108 @@
+from tkinter import *
+import sqlite3
+import tkinter
+import time
+from tkinter import messagebox
+import psycopg2
+
+
+root = Tk()
+root.geometry('500x400')
+root.resizable(0,0)
+root.title('Music player')
+
+
+def loginIsPressed():
+    return
+
+
+def login():
+    global screen2 , usr , pw
+    screen2 = Toplevel(root)
+    screen2.geometry('400x300')
+    screen2.title('Please Log In')
+    Label(screen2, text='Please Log In', font=('Arial', 15)).pack()
+    Label(screen2, text='').pack()
+    Label(screen2, text='Username:').pack()
+    username = Entry(screen2)
+    username.pack()
+    Label(screen2, text='Password:').pack()
+    password = Entry(screen2, show="*")
+    password.pack()
+    Button(screen2, text='Log In', command = loginIsPressed).pack()
+    exit = Button(screen2 , text= 'Exit', command = exitas)
+    exit.pack()
+
+
+
+def register():
+    global screen1, username, password, usr , pw
+    usr = StringVar()
+    pw = StringVar()
+    screen1 = Toplevel(root)
+    screen1.geometry('400x300')
+    screen1.title('Please Register')
+    Label(screen1, text='Please Create A New User Below', font = ('Arial', 15)).pack()
+    Label(screen1, text='').pack()
+    Label(screen1 , text = 'Username:').pack()
+    username= Entry(screen1 , textvariable = usr)
+    username.pack()
+    Label(screen1, text = 'Password:').pack()
+    password = Entry(screen1, textvariable = pw , show="*")
+    password.pack()
+    Button(screen1, text='Register', command = registerDone).pack()
+    exit = Button(screen1 , text= 'Exit', command = exitas)
+    exit.pack()
+
+
+def Database():
+    global c , conn
+    db_name = 'iytegfdg'
+    db_user = 'iytegfdg'
+    db_pass = 'wQXPNm1MLAXUR6kZShuMIkVOJrSoghjg'
+    db_host = 'drona.db.elephantsql.com'
+    db_port = '5432'
+
+    conn = psycopg2.connect(database=db_name, user=db_user, password=db_pass, host=db_host, port=db_port)
+
+    c = conn.cursor()
+
+
+
+def exitas():
+    screen1.destroy()
+
+
+def registerDone():
+    Database()
+    x = pw.get()
+    y = usr.get()
+    if x == '' or y == '':
+        messagebox.showerror('Error','All fields are required')
+    else:
+        c.execute("SELECT * FROM logininfo WHERE 'username' = %s ", (usr.get(),))
+        if c.fetchone() is not None:
+            messagebox.showerror('Error', 'Username already taken')
+        else:
+            c.execute("INSERT INTO logininfo (username,password) VALUES(%s,%s)" ,(str(usr.get()), str(pw.get(),)))
+            conn.commit()
+            conn.close()
+
+
+
+
+
+
+
+def mainscreen():
+    loginButton = Button(root, text='Login', padx= 46 , pady = 20 , command = login).pack()
+    registerButton = Button(root, text='Register', padx= 40 , pady = 20 , command = register).pack()
+
+mainscreen()
+
+
+
+
+
+
+root.mainloop()
