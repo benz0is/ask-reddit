@@ -1,0 +1,60 @@
+import pygame
+from tkinter import *
+from tkinter.filedialog import askopenfiles
+import os
+import tkinter
+
+root = Tk()
+root.geometry('250x400')
+root.resizable(0,0)
+root.title('Music player')
+pygame.init()
+playlist=[]
+
+
+
+def stop():
+    pygame.mixer.music.stop()
+    return
+
+def pause():
+    pygame.mixer.music.pause()
+    return
+
+
+
+def osong():
+    global song
+    song = tkinter.filedialog.askopenfilename(initialdir=r'\Users\user\Desktop\songs', title='Select a song', filetypes=[("Mp3 Files", "*.mp3")])
+    addedsongs(song)
+
+def addedsongs(f):
+    global song_list
+    index = 0
+    f = os.path.basename(f)
+    song_list.insert(index, f)
+    index +=1
+
+def play():
+    pygame.mixer.music.load(song_list.get(ACTIVE))
+    pygame.mixer.music.play()
+
+
+p_button = Button(root, text='Play', command = play)
+s_button = Button(root, text='Stop', command = stop)
+pause_button = Button(root, text = 'Pause' , command = pause)
+o_button= Button(root,text='Open song', command = osong)
+p_button.pack(fill='x')
+s_button.pack(fill='x')
+pause_button.pack(fill='x')
+o_button.pack(fill ='x')
+
+
+var = StringVar()
+f = Label(root,textvariable = var)
+
+song_list = Listbox(root,highlightcolor='blue')
+
+song_list.pack(fill='x')
+
+root.mainloop()
